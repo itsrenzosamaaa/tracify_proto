@@ -4,7 +4,6 @@ import React from "react";
 import Navbar from "../Navbar";
 import Sidebar from "../Sidebar";
 import PropTypes from "prop-types";
-import { alpha } from "@mui/material/styles";
 import Box from "@mui/material/Box";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
@@ -17,16 +16,15 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import Grid from "@mui/material/Grid";
 import Chip from "@mui/material/Chip";
 import Button from "@mui/material/Button";
+import { TextField } from "@mui/material";
+import SearchIcon from "@mui/icons-material/Search";
+import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
 
 function createData(id, item, category, status) {
   return {
@@ -86,30 +84,8 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -152,64 +128,6 @@ EnhancedTableHead.propTypes = {
   rowCount: PropTypes.number.isRequired,
 };
 
-function EnhancedTableToolbar(props) {
-  const { numSelected } = props;
-
-  return (
-    <Toolbar
-      sx={{
-        pl: { sm: 2 },
-        pr: { xs: 1, sm: 1 },
-        ...(numSelected > 0 && {
-          bgcolor: (theme) =>
-            alpha(
-              theme.palette.primary.main,
-              theme.palette.action.activatedOpacity
-            ),
-        }),
-      }}
-    >
-      {numSelected > 0 ? (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          color="inherit"
-          variant="subtitle1"
-          component="div"
-        >
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography
-          sx={{ flex: "1 1 100%" }}
-          variant="h6"
-          id="tableTitle"
-          component="div"
-        >
-          Items
-        </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
-      )}
-    </Toolbar>
-  );
-}
-
-EnhancedTableToolbar.propTypes = {
-  numSelected: PropTypes.number.isRequired,
-};
-
 const Monitor = () => {
   const [order, setOrder] = React.useState("asc");
   const [orderBy, setOrderBy] = React.useState("calories");
@@ -217,6 +135,18 @@ const Monitor = () => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setPage(0);
+  };
+
+  const filteredRows = rows.filter((row) =>
+    Object.values(row).some((value) =>
+      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -269,15 +199,11 @@ const Monitor = () => {
 
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
+  const visibleRows = filteredRows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
   );
 
   return (
@@ -288,16 +214,46 @@ const Monitor = () => {
           flexGrow: "1",
           display: "flex",
           paddingRight: "1%",
-          height: '100%',
+          height: "100%",
         }}
       >
         <Sidebar />
-        <Grid container spacing={2} sx={{ marginTop: "6rem", }}>
-          <Box sx={{ width: '100%', marginBottom: '3rem' }}>
+        <Grid container spacing={2} sx={{ marginTop: "6rem" }}>
+          <Box sx={{ width: "100%", marginBottom: "3rem" }}>
             <Grid item xs={12} sm={10} md={9} lg={8} sx={{ margin: "0 auto" }}>
               <Paper sx={{ width: "100%", mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
-                <TableContainer sx={{ paddingLeft: '1rem' }}>
+                <Toolbar
+                  sx={{
+                    pl: { sm: 2 },
+                    pr: { xs: 1, sm: 1 },
+                  }}
+                >
+                  <Typography
+                    sx={{ flex: "1 1 100%" }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                  >
+                    Items
+                  </Typography>
+                  <TextField
+                    sx={{ width: "20rem" }}
+                    id="outlined-basic"
+                    label="Search"
+                    variant="outlined"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    InputProps={{
+                      startAdornment: (
+                        <SearchIcon
+                          color="action"
+                          sx={{ marginRight: "0.5rem" }}
+                        />
+                      ),
+                    }}
+                  />
+                </Toolbar>
+                <TableContainer sx={{ paddingLeft: "1rem" }}>
                   <Table
                     sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
@@ -320,11 +276,8 @@ const Monitor = () => {
                           <TableRow
                             hover
                             onClick={(event) => handleClick(event, row.id)}
-                            role="checkbox"
-                            aria-checked={isItemSelected}
                             tabIndex={-1}
                             key={row.id}
-                            selected={isItemSelected}
                             sx={{ cursor: "pointer" }}
                           >
                             <TableCell
@@ -337,14 +290,36 @@ const Monitor = () => {
                             </TableCell>
                             <TableCell align="right">{row.category}</TableCell>
                             <TableCell align="right">
-                              {row.status === 'Resolved' ? <Chip color="success" label={row.status} /> : ''}
-                              {row.status === 'Validating' ? <Chip color="secondary" label={row.status} /> : ''}
-                              {row.status === 'Published' ? <Chip color="info" label={row.status} /> : ''}
-                              {row.status === 'Reserved' ? <Chip color="warning" label={row.status} /> : ''}
-                              {row.status === 'Invalid' ? <Chip color="error" label={row.status} /> : ''}
+                              {row.status === "Resolved" ? (
+                                <Chip color="success" label={row.status} />
+                              ) : (
+                                ""
+                              )}
+                              {row.status === "Validating" ? (
+                                <Chip color="secondary" label={row.status} />
+                              ) : (
+                                ""
+                              )}
+                              {row.status === "Published" ? (
+                                <Chip color="info" label={row.status} />
+                              ) : (
+                                ""
+                              )}
+                              {row.status === "Reserved" ? (
+                                <Chip color="warning" label={row.status} />
+                              ) : (
+                                ""
+                              )}
+                              {row.status === "Invalid" ? (
+                                <Chip color="error" label={row.status} />
+                              ) : (
+                                ""
+                              )}
                             </TableCell>
                             <TableCell align="right">
-                              <Button color="primary" variant="contained">Edit</Button>
+                              <Button color="primary" variant="contained">
+                                <EditOutlinedIcon />
+                              </Button>
                             </TableCell>
                           </TableRow>
                         );
@@ -372,7 +347,9 @@ const Monitor = () => {
                 />
               </Paper>
               <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
+                control={
+                  <Switch checked={dense} onChange={handleChangeDense} />
+                }
                 label="Dense padding"
               />
             </Grid>

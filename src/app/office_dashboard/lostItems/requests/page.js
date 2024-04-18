@@ -17,44 +17,158 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import Tooltip from "@mui/material/Tooltip";
+import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
-import DeleteIcon from "@mui/icons-material/Delete";
-import FilterListIcon from "@mui/icons-material/FilterList";
 import { visuallyHidden } from "@mui/utils";
 import Grid from "@mui/material/Grid";
-import Chip from "@mui/material/Chip";
+import Modal from "@mui/material/Modal";
 import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
+import SearchIcon from "@mui/icons-material/Search";
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CloseIcon from "@mui/icons-material/Close";
+import Image from "next/image";
 
-function createData(id, item, category, status) {
+const foundItems = [
+  {
+    id: 1,
+    itemName: "Wallet",
+    category: "Accessories",
+    description: "Sa canteen ko po siya nakuha na may lamang 300 po.",
+    owner: "Simon",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 2,
+    itemName: "Keys",
+    category: "Accessories",
+    description: "May kasama po siyang keychain",
+    owner: "Joy",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 3,
+    itemName: "Charger",
+    category: "Electronics",
+    description: "Type C po yung charger niya.",
+    owner: "Benedict",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 4,
+    itemName: "Airpods",
+    category: "Electronics",
+    description: "2nd gen po yung airpods nito",
+    owner: "Rex",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 5,
+    itemName: "T-Shirt",
+    category: "Clothing",
+    description: "Plain white po siya, large size",
+    owner: "Ray",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 6,
+    itemName: "Gloves",
+    category: "Clothing",
+    description: "Leather po yung texture neto tsaka yellow po yung kulay niya",
+    owner: "Zoe",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 7,
+    itemName: "Headset",
+    category: "Accessories",
+    description: "May sticker po sa left side nito",
+    owner: "Jane",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 8,
+    itemName: "Bracelet",
+    category: "Accessories",
+    description: "Naka genshin electro vision po yung bracelet",
+    owner: "Robert",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+  {
+    id: 9,
+    itemName: "Cap",
+    category: "Clothing",
+    description: "May Chicago Bulls po na logo",
+    owner: "Jered",
+    location: "RLO202",
+    dateLost: "January 12, 2024",
+    timeLost: "2:30 PM",
+  },
+];
+
+function createData(
+  id,
+  owner,
+  itemName,
+  category,
+  description,
+  location,
+  dateLost,
+  timeLost
+) {
   return {
     id,
-    item,
+    owner,
+    itemName,
     category,
-    status,
+    description,
+    location,
+    dateLost,
+    timeLost,
   };
 }
 
-const rows = [
-  createData(1, "Wallet", "Accessories", "Resolved", 67, 4.3),
-  createData(2, "Keys", "Accessories", "Validating", 51, 4.9),
-  createData(3, "Charger", "Electronics", "Published", 24, 6.0),
-  createData(4, "Airpods", "Electronics", "Validating", 24, 4.0),
-  createData(5, "T-Shirt", "Clothing", "Reserved", 49, 3.9),
-  createData(6, "Gloves", "Clothing", "Reserved", 87, 6.5),
-  createData(7, "Headset", "Accessories", "Resolved", 37, 4.3),
-  createData(8, "Bracelet", "Accessories", "Published", 94, 0.0),
-  createData(9, "Cap", "Clothing", "Resolved", 7.0),
-];
+const rows = foundItems.map((item) =>
+  createData(
+    item.id,
+    item.owner,
+    item.itemName,
+    item.category,
+    item.description,
+    item.location,
+    item.dateLost,
+    item.timeLost
+  )
+);
 
 const columns = [
   {
-    id: "name",
+    id: "owner",
     numeric: false,
     disablePadding: true,
     label: "Name",
+  },
+  {
+    id: "itemName",
+    numeric: true,
+    disablePadding: false,
+    label: "Item",
   },
   {
     id: "category",
@@ -86,30 +200,8 @@ function descendingComparator(a, b, orderBy) {
   return 0;
 }
 
-function getComparator(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-function stableSort(array, comparator) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
-
 function EnhancedTableHead(props) {
-  const {
-    order,
-    orderBy,
-    onRequestSort,
-  } = props;
+  const { order, orderBy, onRequestSort } = props;
   const createSortHandler = (property) => (event) => {
     onRequestSort(event, property);
   };
@@ -185,22 +277,8 @@ function EnhancedTableToolbar(props) {
           id="tableTitle"
           component="div"
         >
-          Request Lost Items
+          Request Found Items
         </Typography>
-      )}
-
-      {numSelected > 0 ? (
-        <Tooltip title="Delete">
-          <IconButton>
-            <DeleteIcon />
-          </IconButton>
-        </Tooltip>
-      ) : (
-        <Tooltip title="Filter list">
-          <IconButton>
-            <FilterListIcon />
-          </IconButton>
-        </Tooltip>
       )}
     </Toolbar>
   );
@@ -217,6 +295,21 @@ const Requests = () => {
   const [page, setPage] = React.useState(0);
   const [dense, setDense] = React.useState(false);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [openModal, setOpenModal] = React.useState(null);
+  const handleOpenModal = (rowId) => setOpenModal(rowId);
+  const handleCloseModal = () => setOpenModal(null);
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleSearchChange = (event) => {
+    setSearchTerm(event.target.value);
+    setPage(0); // Reset page number when search term changes
+  };
+
+  const filteredRows = rows.filter((row) =>
+    Object.values(row).some((value) =>
+      value.toString().toLowerCase().includes(searchTerm.toLowerCase())
+    )
+  );
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === "asc";
@@ -265,19 +358,13 @@ const Requests = () => {
     setDense(event.target.checked);
   };
 
-  const isSelected = (id) => selected.indexOf(id) !== -1;
-
   // Avoid a layout jump when reaching the last page with empty rows.
   const emptyRows =
-    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - rows.length) : 0;
+    page > 0 ? Math.max(0, (1 + page) * rowsPerPage - filteredRows.length) : 0;
 
-  const visibleRows = React.useMemo(
-    () =>
-      stableSort(rows, getComparator(order, orderBy)).slice(
-        page * rowsPerPage,
-        page * rowsPerPage + rowsPerPage
-      ),
-    [order, orderBy, page, rowsPerPage]
+  const visibleRows = filteredRows.slice(
+    page * rowsPerPage,
+    page * rowsPerPage + rowsPerPage
   );
 
   return (
@@ -288,16 +375,46 @@ const Requests = () => {
           flexGrow: "1",
           display: "flex",
           paddingRight: "1%",
-          height: '100%',
+          height: "100%",
         }}
       >
         <Sidebar />
-        <Grid container spacing={2} sx={{ marginTop: "6rem", }}>
-          <Box sx={{ width: '100%', marginBottom: '3rem' }}>
+        <Grid container spacing={2} sx={{ marginTop: "6rem" }}>
+          <Box sx={{ width: "100%", marginBottom: "3rem" }}>
             <Grid item xs={12} sm={10} md={9} lg={8} sx={{ margin: "0 auto" }}>
               <Paper sx={{ width: "100%", mb: 2 }}>
-                <EnhancedTableToolbar numSelected={selected.length} />
-                <TableContainer sx={{ paddingLeft: '1rem' }}>
+                <Toolbar
+                  sx={{
+                    pl: { sm: 2 },
+                    pr: { xs: 1, sm: 1 },
+                  }}
+                >
+                  <Typography
+                    sx={{ flex: "1 1 100%" }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                  >
+                    Request Lost Items
+                  </Typography>
+                  <TextField
+                    sx={{ width: "20rem" }}
+                    id="outlined-basic"
+                    label="Search"
+                    variant="outlined"
+                    value={searchTerm}
+                    onChange={handleSearchChange}
+                    InputProps={{
+                      startAdornment: (
+                        <SearchIcon
+                          color="action"
+                          sx={{ marginRight: "0.5rem" }}
+                        />
+                      ),
+                    }}
+                  />
+                </Toolbar>
+                <TableContainer sx={{ paddingLeft: "1rem" }}>
                   <Table
                     sx={{ minWidth: 750 }}
                     aria-labelledby="tableTitle"
@@ -313,7 +430,6 @@ const Requests = () => {
                     />
                     <TableBody>
                       {visibleRows.map((row, index) => {
-                        const isItemSelected = isSelected(row.id);
                         const labelId = `enhanced-table-checkbox-${index}`;
 
                         return (
@@ -321,10 +437,8 @@ const Requests = () => {
                             hover
                             onClick={(event) => handleClick(event, row.id)}
                             role="checkbox"
-                            aria-checked={isItemSelected}
                             tabIndex={-1}
                             key={row.id}
-                            selected={isItemSelected}
                             sx={{ cursor: "pointer" }}
                           >
                             <TableCell
@@ -333,18 +447,134 @@ const Requests = () => {
                               scope="row"
                               padding="none"
                             >
-                              {row.item}
+                              {row.owner}
                             </TableCell>
+                            <TableCell align="right">{row.itemName}</TableCell>
                             <TableCell align="right">{row.category}</TableCell>
                             <TableCell align="right">
-                              {row.status === 'Resolved' ? <Chip color="success" label={row.status} /> : ''}
-                              {row.status === 'Validating' ? <Chip color="secondary" label={row.status} /> : ''}
-                              {row.status === 'Published' ? <Chip color="info" label={row.status} /> : ''}
-                              {row.status === 'Reserved' ? <Chip color="warning" label={row.status} /> : ''}
-                              {row.status === 'Invalid' ? <Chip color="error" label={row.status} /> : ''}
+                              <Button
+                                variant="contained"
+                                onClick={() => handleOpenModal(row.id)}
+                              >
+                                View Details
+                              </Button>
+                              <Modal
+                                open={openModal === row.id}
+                                onClose={handleCloseModal}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                              >
+                                <Box
+                                  sx={{
+                                    position: "absolute",
+                                    top: "50%",
+                                    left: "50%",
+                                    transform: "translate(-50%, -50%)",
+                                    width: 400,
+                                    bgcolor: "background.paper",
+                                    boxShadow: 24,
+                                    p: 4,
+                                  }}
+                                >
+                                  <Box>
+                                    <Box
+                                      sx={{
+                                        my: "2rem",
+                                        display: "flex",
+                                        flexDirection: "column",
+                                        alignItems: "center",
+                                      }}
+                                    >
+                                      <Image src="/lost.jpg" height="140" width="250" alt="Found Item" />
+                                    </Box>
+                                    <Typography
+                                      id="modal-modal-title"
+                                      variant="h6"
+                                      component="h2"
+                                      sx={{ mb: "2rem", textAlign: "center" }}
+                                    >
+                                      <strong>{row.itemName}</strong>
+                                    </Typography>
+                                    <Typography
+                                      variant="body1"
+                                      component="div"
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        mb: "1rem",
+                                      }}
+                                    >
+                                      <span>
+                                        <strong>Lost in:</strong>
+                                      </span>
+                                      <span>{row.location}</span>
+                                    </Typography>
+                                    <Typography
+                                      variant="body1"
+                                      component="div"
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        mb: "1rem",
+                                      }}
+                                    >
+                                      <span>
+                                        <strong>Date Lost:</strong>
+                                      </span>
+                                      <span>{row.dateLost}</span>
+                                    </Typography>
+                                    <Typography
+                                      variant="body1"
+                                      component="div"
+                                      sx={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                        mb: "2rem",
+                                      }}
+                                    >
+                                      <span>
+                                        <strong>Time Lost:</strong>
+                                      </span>
+                                      <span>{row.timeLost}</span>
+                                    </Typography>
+                                    <Typography
+                                      variant="body1"
+                                      component="div"
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        mb: "1rem",
+                                        textAlign: "center",
+                                      }}
+                                    >
+                                      <strong>Item Description:</strong>
+                                    </Typography>
+                                    <Typography
+                                      variant="body1"
+                                      component="div"
+                                      sx={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "center",
+                                        wordBreak: "break-word",
+                                        mb: "1rem",
+                                        textAlign: "center",
+                                      }}
+                                    >
+                                      &ldquo;{row.description}&rdquo;
+                                    </Typography>
+                                  </Box>
+                                </Box>
+                              </Modal>
                             </TableCell>
-                            <TableCell align="right">
-                              <Button color="primary" variant="contained">Edit</Button>
+                            <TableCell align="right" sx={{ display: "flex", justifyContent: "space-evenly" }}>
+                              <Button color="success" variant="contained">
+                                <CheckCircleOutlineIcon />
+                              </Button>
+                              <Button color="error" variant="contained">
+                                <CloseIcon />
+                              </Button>
                             </TableCell>
                           </TableRow>
                         );
@@ -372,7 +602,9 @@ const Requests = () => {
                 />
               </Paper>
               <FormControlLabel
-                control={<Switch checked={dense} onChange={handleChangeDense} />}
+                control={
+                  <Switch checked={dense} onChange={handleChangeDense} />
+                }
                 label="Dense padding"
               />
             </Grid>

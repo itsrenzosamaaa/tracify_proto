@@ -7,12 +7,13 @@ import MuiDrawer from '@mui/material/Drawer';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import { UseApp } from './StatNav';
-import OtherHousesOutlinedIcon from '@mui/icons-material/OtherHousesOutlined';
-import PhotoCameraFrontOutlinedIcon from '@mui/icons-material/PhotoCameraFrontOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
+import SearchIcon from '@mui/icons-material/Search';
+import HighlightOffIcon from '@mui/icons-material/HighlightOff';
+import MonitorIcon from '@mui/icons-material/Monitor';
 import GroupOutlinedIcon from '@mui/icons-material/GroupOutlined';
 import Tab from '@mui/material/Tab';
 import TabList from '@mui/lab/TabList';
-import TabPanel from '@mui/lab/TabPanel';
 import TabContext from '@mui/lab/TabContext';
 import Link from 'next/link';
 
@@ -61,16 +62,16 @@ const Drawer = styled(MuiDrawer, { shouldForwardProp: (prop) => prop !== 'open' 
         ...openedMixin(theme),
         '& .MuiDrawer-paper': {
           ...openedMixin(theme),
-          backgroundColor: '#14394D', // Set your desired background color when open
-          color: '#fff', // Set your desired text color when open
+          backgroundColor: '#FFFFFF', // Set your desired background color when open
+          color: '#000000', // Set your desired text color when open
         },
       }),
       ...(!open && {
         ...closedMixin(theme),
         '& .MuiDrawer-paper': {
           ...closedMixin(theme),
-          backgroundColor: '#14394D', // Set your desired background color when closed
-          color: '#fff', // Set your desired text color when closed
+          backgroundColor: '#FFFFFF', // Set your desired background color when closed
+          color: '#000000', // Set your desired text color when closed
         },
       }),
     }),
@@ -113,7 +114,6 @@ export default function Admin() {
                         <Tab
                             component={Link} // Set the component prop to Link
                             href="/office_dashboard"
-                            sx={{backgroundColor:''}}
                             label={
                                 <ListItem                
                                     sx={{
@@ -129,9 +129,9 @@ export default function Admin() {
                                     justifyContent: 'center',
                                 }}
                                 >
-                                <OtherHousesOutlinedIcon sx={{fontSize: 30, marginLeft: -2.6, color: '#8a96a3',}}/>
+                                <HomeOutlinedIcon sx={{fontSize: 30, marginLeft: -2.6, color: '#1a237e',}}/>
                                 </ListItemIcon>                   
-                                <ListItemText primary="Home" sx={{ color: '#8a96a3', alignItems: "center", opacity: open ? 1 : 0 }} />
+                                <ListItemText primary="Home" sx={{ color: '#1a237e', alignItems: "center", opacity: open ? 1 : 0 }} />
                                 </ListItem>  
                             }
                         />
@@ -153,9 +153,9 @@ export default function Admin() {
                                     justifyContent: 'center',
                                 }}
                                 >
-                                <PhotoCameraFrontOutlinedIcon sx={{fontSize: 30, marginLeft:  -2.6, color: '#8a96a3' }}/>
+                                <SearchIcon sx={{fontSize: 30, marginLeft:  -2.6, color: '#1a237e' }}/>
                                 </ListItemIcon>                   
-                                <ListItemText primary="Found Items" sx={{color: '#8a96a3', alignItems: "center", opacity: open ? 1 : 0 }} />       
+                                <ListItemText primary="Found Items" sx={{color: '#1a237e', alignItems: "center", opacity: open ? 1 : 0 }} />       
                                 </ListItem>  
                             }
                     
@@ -178,9 +178,9 @@ export default function Admin() {
                                     justifyContent: 'center',
                                 }}
                                 >
-                                <GroupOutlinedIcon sx={{fontSize: 30, marginLeft:  -2.6, color: '#8a96a3' }}/>
+                                <HighlightOffIcon sx={{fontSize: 30, marginLeft:  -2.6, color: '#1a237e' }}/>
                                 </ListItemIcon>                   
-                                <ListItemText primary="Lost Items" sx={{color: '#8a96a3', alignItems: "center", opacity: open ? 1 : 0 }} />       
+                                <ListItemText primary="Lost Items" sx={{color: '#1a237e', alignItems: "center", opacity: open ? 1 : 0 }} />       
                                 </ListItem>  
                             }
                     
@@ -204,9 +204,9 @@ export default function Admin() {
                                     justifyContent: 'center',
                                 }}
                                 >
-                                <OtherHousesOutlinedIcon sx={{fontSize: 30, marginLeft: -2.6, color: '#8a96a3',}}/>
+                                <MonitorIcon sx={{fontSize: 30, marginLeft: -2.6, color: '#1a237e',}}/>
                                 </ListItemIcon>                   
-                                <ListItemText primary="Monitor" sx={{ color: '#8a96a3', alignItems: "center", opacity: open ? 1 : 0 }} />
+                                <ListItemText primary="Monitor" sx={{ color: '#1a237e', alignItems: "center", opacity: open ? 1 : 0 }} />
                                 </ListItem>  
                             }
                         />
@@ -228,9 +228,9 @@ export default function Admin() {
                                     justifyContent: 'center',
                                 }}
                                 >
-                                <GroupOutlinedIcon sx={{fontSize: 30, marginLeft:  -2.6, color: '#8a96a3' }}/>
+                                <GroupOutlinedIcon sx={{fontSize: 30, marginLeft:  -2.6, color: '#1a237e' }}/>
                                 </ListItemIcon>                   
-                                <ListItemText primary="Users" sx={{color: '#8a96a3', alignItems: "center", opacity: open ? 1 : 0 }} />       
+                                <ListItemText primary="Users" sx={{color: '#1a237e', alignItems: "center", opacity: open ? 1 : 0 }} />       
                                 </ListItem>  
                             }
                     

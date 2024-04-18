@@ -76,7 +76,7 @@ export default function LostItems() {
                                 >
                                     <Box sx={modal}>
                                         <Typography id="modal-modal-title" variant="h6" component="h2">
-                                            Add Found Item
+                                            Add Lost Item
                                         </Typography>
                                         <Typography id="modal-modal-description" sx={{ mt: 2 }}>
                                             <Grid item xs={12}>
@@ -147,8 +147,8 @@ export default function LostItems() {
                                                         <Grid item xs={12}>
                                                             <TextField
                                                                 type="text"
-                                                                name="finder"
-                                                                label="Finder"
+                                                                name="owner"
+                                                                label="Owner"
                                                                 variant="outlined"
                                                                 fullWidth
                                                                 // value={form.password}
