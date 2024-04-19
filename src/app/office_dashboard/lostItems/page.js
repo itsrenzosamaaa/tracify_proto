@@ -17,6 +17,7 @@ import TextField from '@mui/material/TextField';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 import Link from 'next/link';
+import InputLabel from '@mui/material/InputLabel';
 import ArticleIcon from '@mui/icons-material/Article';
 import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -95,9 +96,11 @@ export default function LostItems() {
                                                             />
                                                         </Grid>
                                                         <Grid item xs={12}>
+                                                            <InputLabel id="demo-simple-select-label">Category</InputLabel>
                                                             <Select
+                                                                labelId="demo-simple-select-label"
+                                                                id="demo-simple-select"
                                                                 fullWidth
-                                                                label="Category"
                                                                 name="item_category"
                                                                 // value={age}
                                                                 // onChange={handleChange}
@@ -113,6 +116,7 @@ export default function LostItems() {
                                                                 name="item_description"
                                                                 label="Description"
                                                                 variant="outlined"
+                                                                multiline
                                                                 fullWidth
                                                                 // value={form.password}
                                                                 // onChange={handleChange}
@@ -189,7 +193,7 @@ export default function LostItems() {
                                             {item.name}
                                         </Typography>
                                         <Typography gutterBottom variant="p" component="div">
-                                            Found by: {item.owner}
+                                            Owner: {item.owner}
                                         </Typography>
                                         <Typography variant="body2" color="text.secondary">
                                             {item.description}

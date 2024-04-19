@@ -146,7 +146,7 @@ export default function LostItemsID({ params }) {
                       }}
                     >
                       <span>
-                        <strong>Found by:</strong>
+                        <strong>Owner:</strong>
                       </span>
                       <span>{lostID.owner}</span>
                     </Typography>
@@ -164,7 +164,7 @@ export default function LostItemsID({ params }) {
                       }}
                     >
                       <span>
-                        <strong>Found in:</strong>
+                        <strong>Lost in:</strong>
                       </span>
                       <span>{lostID.location}</span>
                     </Typography>
@@ -178,7 +178,7 @@ export default function LostItemsID({ params }) {
                       }}
                     >
                       <span>
-                        <strong>Date Found:</strong>
+                        <strong>Date Lost:</strong>
                       </span>
                       <span>{lostID.dateLost}</span>
                     </Typography>
@@ -188,7 +188,7 @@ export default function LostItemsID({ params }) {
                       sx={{ display: "flex", justifyContent: "space-between" }}
                     >
                       <span>
-                        <strong>Time Found:</strong>
+                        <strong>Time Lost:</strong>
                       </span>
                       <span>{lostID.timeLost}</span>
                     </Typography>
@@ -266,7 +266,7 @@ export default function LostItemsID({ params }) {
               <Typography variant="p" component="div">
                 Oops! I think the item you searched for is not on the list...{" "}
                 <br />
-                Click <Link href="/office_dashboard/foundItems">here</Link> to
+                Click <Link href="/office_dashboard/lostItems">here</Link> to
                 redirect.
               </Typography>
             </>
