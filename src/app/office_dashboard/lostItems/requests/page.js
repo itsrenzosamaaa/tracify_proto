@@ -471,7 +471,7 @@ const Requests = () => {
                                   <ModalClose />
                                   <DialogTitle>Lost Item Details</DialogTitle>
                                   <DialogContent>
-                                    Information about the owner's item.
+                                    Information about the owner&apos;s item.
                                   </DialogContent>
                                   <Stack spacing={2}>
                                     <Box

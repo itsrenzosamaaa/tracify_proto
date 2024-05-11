@@ -19,6 +19,7 @@ import {
 } from "@mui/joy";
 import Navbar from "../Navbar";
 import Sidebar from "../Sidebar";
+import Image from "next/image";
 
 const items = [
   {
@@ -119,7 +120,7 @@ export default function User() {
                     >
                       <CardOverflow>
                         <AspectRatio ratio="1" sx={{ width: 110 }}>
-                          <img src="/lost.jpg" alt="" />
+                        <Image src="/lost.jpg" alt="" height="140" width="250"/>
                         </AspectRatio>
                       </CardOverflow>
                       <Grid item xs={11} lg={11}>
@@ -197,7 +198,7 @@ export default function User() {
                     >
                       <CardOverflow>
                         <AspectRatio ratio="1" sx={{ width: 110 }}>
-                          <img src="/lost.jpg" alt="" />
+                          <Image src="/lost.jpg" alt="" height="140" width="250"/>
                         </AspectRatio>
                       </CardOverflow>
                       <Grid item xs={11} lg={11}>
