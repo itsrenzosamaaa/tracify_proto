@@ -20,11 +20,15 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import Grid from "@mui/material/Grid";
-import Chip from "@mui/material/Chip";
-import Button from "@mui/material/Button";
-import { TextField } from "@mui/material";
+import Chip from "@mui/joy/Chip";
+import { Input, Button } from "@mui/joy";
 import SearchIcon from "@mui/icons-material/Search";
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
+import DoneIcon from '@mui/icons-material/Done';
+import PendingActionsIcon from '@mui/icons-material/PendingActions';
+import PublishedWithChangesIcon from '@mui/icons-material/PublishedWithChanges';
+import EventAvailableIcon from '@mui/icons-material/EventAvailable';
+import ClearIcon from '@mui/icons-material/Clear';
 
 function createData(id, item, category, status) {
   return {
@@ -73,16 +77,6 @@ const columns = [
     label: "Action",
   },
 ];
-
-function descendingComparator(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
 
 function EnhancedTableHead(props) {
   const { order, orderBy, onRequestSort } = props;
@@ -236,21 +230,19 @@ const Monitor = () => {
                   >
                     Items
                   </Typography>
-                  <TextField
+                  <Input
                     sx={{ width: "20rem" }}
                     id="outlined-basic"
-                    label="Search"
+                    placeholder="Search"
                     variant="outlined"
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    InputProps={{
-                      startAdornment: (
-                        <SearchIcon
-                          color="action"
-                          sx={{ marginRight: "0.5rem" }}
-                        />
-                      ),
-                    }}
+                    startDecorator={
+                      <SearchIcon
+                        color="action"
+                        sx={{ marginRight: "0.5rem" }}
+                      />
+                    }
                   />
                 </Toolbar>
                 <TableContainer sx={{ paddingLeft: "1rem" }}>
@@ -269,7 +261,6 @@ const Monitor = () => {
                     />
                     <TableBody>
                       {visibleRows.map((row, index) => {
-                        const isItemSelected = isSelected(row.id);
                         const labelId = `enhanced-table-checkbox-${index}`;
 
                         return (
@@ -291,33 +282,33 @@ const Monitor = () => {
                             <TableCell align="right">{row.category}</TableCell>
                             <TableCell align="right">
                               {row.status === "Resolved" ? (
-                                <Chip color="success" label={row.status} />
+                                <Chip color="success" variant="solid" size="md" startDecorator={<DoneIcon />}> {row.status} </Chip>
                               ) : (
                                 ""
                               )}
                               {row.status === "Validating" ? (
-                                <Chip color="secondary" label={row.status} />
+                                <Chip color="warning" variant="solid" size="md" startDecorator={<PendingActionsIcon />}> {row.status} </Chip>
                               ) : (
                                 ""
                               )}
                               {row.status === "Published" ? (
-                                <Chip color="info" label={row.status} />
+                                <Chip color="primary" variant="solid" size="md" startDecorator={<PublishedWithChangesIcon />}> {row.status} </Chip>
                               ) : (
                                 ""
                               )}
                               {row.status === "Reserved" ? (
-                                <Chip color="warning" label={row.status} />
+                                <Chip color="neutral" variant="solid" size="md" startDecorator={<EventAvailableIcon />}> {row.status} </Chip>
                               ) : (
                                 ""
                               )}
                               {row.status === "Invalid" ? (
-                                <Chip color="error" label={row.status} />
+                                <Chip color="danger" variant="solid" size="md" startDecorator={<ClearIcon />}> {row.status} </Chip>
                               ) : (
                                 ""
                               )}
                             </TableCell>
                             <TableCell align="right">
-                              <Button color="primary" variant="contained">
+                              <Button color="primary" variant="solid">
                                 <EditOutlinedIcon />
                               </Button>
                             </TableCell>

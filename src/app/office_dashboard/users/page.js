@@ -20,30 +20,31 @@ import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import Grid from "@mui/material/Grid";
-import Chip from "@mui/material/Chip";
-import Button from "@mui/material/Button";
-import { TextField } from "@mui/material";
+import Button from "@mui/joy/Button";
+import { Input } from "@mui/joy";
 import SearchIcon from "@mui/icons-material/Search";
+import EditOutlined from "@mui/icons-material/EditOutlined";
+import Delete from "@mui/icons-material/Delete";
 
-function createData(id, item, category, status) {
+function createData(id, name, role, action) {
   return {
     id,
-    item,
-    category,
-    status,
+    name,
+    role,
+    action,
   };
 }
 
 const rows = [
-  createData(1, "Wallet", "Accessories", "Resolved", 67, 4.3),
-  createData(2, "Keys", "Accessories", "Validating", 51, 4.9),
-  createData(3, "Charger", "Electronics", "Published", 24, 6.0),
-  createData(4, "Airpods", "Electronics", "Validating", 24, 4.0),
-  createData(5, "T-Shirt", "Clothing", "Reserved", 49, 3.9),
-  createData(6, "Gloves", "Clothing", "Reserved", 87, 6.5),
-  createData(7, "Headset", "Accessories", "Resolved", 37, 4.3),
-  createData(8, "Bracelet", "Accessories", "Published", 94, 0.0),
-  createData(9, "Cap", "Clothing", "Resolved", 7.0),
+  createData(1, "Jean", "Teacher", "Resolved", 67, 4.3),
+  createData(2, "Klee", "Student", "Validating", 51, 4.9),
+  createData(3, "Zean", "Student", "Published", 24, 6.0),
+  createData(4, "Gon", "Student", "Validating", 24, 4.0),
+  createData(5, "Anton", "Teacher", "Reserved", 49, 3.9),
+  createData(6, "John", "Student", "Reserved", 87, 6.5),
+  createData(7, "Bennett", "Teacher", "Resolved", 37, 4.3),
+  createData(8, "Travis", "Teacher", "Published", 94, 0.0),
+  createData(9, "George", "Student", "Resolved", 7.0),
 ];
 
 const columns = [
@@ -54,19 +55,13 @@ const columns = [
     label: "Name",
   },
   {
-    id: "category",
+    id: "role",
     numeric: true,
     disablePadding: false,
-    label: "Category",
+    label: "Role",
   },
   {
-    id: "status",
-    numeric: true,
-    disablePadding: false,
-    label: "Status",
-  },
-  {
-    id: "actions",
+    id: "action",
     numeric: true,
     disablePadding: false,
     label: "Action",
@@ -218,142 +213,165 @@ const Users = () => {
       >
         <Sidebar />
         <Grid container spacing={2} sx={{ marginTop: "6rem" }}>
-          <Box sx={{ width: "100%", marginBottom: "3rem" }}>
-            <Grid item xs={12} sm={10} md={9} lg={8} sx={{ margin: "0 auto" }}>
-              <Typography variant="h4" sx={{ marginBottom: "1rem" }}>
-                Users
-              </Typography>
-              {/* <Paper sx={{ width: "100%", mb: 2 }}>
-                <Toolbar
-                  sx={{
-                    pl: { sm: 2 },
-                    pr: { xs: 1, sm: 1 },
-                  }}
-                >
+          <Box
+            sx={{
+              width: "100%",
+              marginBottom: "3rem",
+              display: "flex",
+              justifyContent: "center",
+            }}
+          >
+            <Grid container spacing={2} justifyContent="center">
+              <Grid item xs={10} lg={4}>
+                <Paper sx={{ width: "100%", mb: 2, padding: '1rem', }}>
                   <Typography
-                    sx={{ flex: "1 1 100%" }}
-                    variant="h6"
-                    id="tableTitle"
+                    variant="body1"
                     component="div"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: "0.5rem",
+                    }}
                   >
-                    Users
+                    <span>
+                      <strong>Office Name:</strong>
+                    </span>
+                    <span>SASO</span>
                   </Typography>
-                  <TextField
-                    sx={{ width: "20rem" }}
-                    id="outlined-basic"
-                    label="Search"
-                    variant="outlined"
-                    value={searchTerm}
-                    onChange={handleSearchChange}
-                    InputProps={{
-                      startAdornment: (
+                  <Typography
+                    variant="body1"
+                    component="div"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: "0.5rem",
+                    }}
+                  >
+                    <span>
+                      <strong>Office Address:</strong>
+                    </span>
+                    <span>3rd Floor of RLF Building</span>
+                  </Typography>
+                  <Typography
+                    variant="body1"
+                    component="div"
+                    sx={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      mb: "0.5rem",
+                    }}
+                  >
+                    <span>
+                      <strong>School Category:</strong>
+                    </span>
+                    <span>Higher Education</span>
+                  </Typography>
+                </Paper>
+              </Grid>
+              <Grid item xs={10} lg={7}>
+                <Paper sx={{ width: "100%", mb: 2 }}>
+                  <Toolbar sx={{ pl: { sm: 2 }, pr: { xs: 1, sm: 1 } }}>
+                    <Typography
+                      sx={{ flex: "1 1 100%" }}
+                      variant="h6"
+                      id="tableTitle"
+                      component="div"
+                    >
+                      Users
+                    </Typography>
+                    <Input
+                      sx={{ width: "20rem" }}
+                      id="outlined-basic"
+                      placeholder="Search"
+                      variant="outlined"
+                      value={searchTerm}
+                      onChange={handleSearchChange}
+                      startDecorator={
                         <SearchIcon
                           color="action"
                           sx={{ marginRight: "0.5rem" }}
                         />
-                      ),
-                    }}
-                  />
-                </Toolbar>
-                <TableContainer sx={{ paddingLeft: "1rem" }}>
-                  <Table
-                    sx={{ minWidth: 750 }}
-                    aria-labelledby="tableTitle"
-                    size={dense ? "small" : "medium"}
-                  >
-                    <EnhancedTableHead
-                      numSelected={selected.length}
-                      order={order}
-                      orderBy={orderBy}
-                      onSelectAllClick={handleSelectAllClick}
-                      onRequestSort={handleRequestSort}
-                      rowCount={rows.length}
+                      }
                     />
-                    <TableBody>
-                      {visibleRows.map((row, index) => {
-                        const isItemSelected = isSelected(row.id);
-                        const labelId = `enhanced-table-checkbox-${index}`;
+                  </Toolbar>
+                  <TableContainer sx={{ pl: { sm: "1rem" } }}>
+                    <Table
+                      sx={{ minWidth: 750 }}
+                      aria-labelledby="tableTitle"
+                      size={dense ? "small" : "medium"}
+                    >
+                      <EnhancedTableHead
+                        numSelected={selected.length}
+                        order={order}
+                        orderBy={orderBy}
+                        onSelectAllClick={handleSelectAllClick}
+                        onRequestSort={handleRequestSort}
+                        rowCount={rows.length}
+                      />
+                      <TableBody>
+                        {visibleRows.map((row, index) => {
+                          const labelId = `enhanced-table-checkbox-${index}`;
 
-                        return (
-                          <TableRow
-                            hover
-                            onClick={(event) => handleClick(event, row.id)}
-                            tabIndex={-1}
-                            key={row.id}
-                            sx={{ cursor: "pointer" }}
-                          >
-                            <TableCell
-                              component="th"
-                              id={labelId}
-                              scope="row"
-                              padding="none"
+                          return (
+                            <TableRow
+                              hover
+                              onClick={(event) => handleClick(event, row.id)}
+                              tabIndex={-1}
+                              key={row.id}
+                              sx={{ cursor: "pointer" }}
                             >
-                              {row.item}
-                            </TableCell>
-                            <TableCell align="right">{row.category}</TableCell>
-                            <TableCell align="right">
-                              {row.status === "Resolved" ? (
-                                <Chip color="success" label={row.status} />
-                              ) : (
-                                ""
-                              )}
-                              {row.status === "Validating" ? (
-                                <Chip color="secondary" label={row.status} />
-                              ) : (
-                                ""
-                              )}
-                              {row.status === "Published" ? (
-                                <Chip color="info" label={row.status} />
-                              ) : (
-                                ""
-                              )}
-                              {row.status === "Reserved" ? (
-                                <Chip color="warning" label={row.status} />
-                              ) : (
-                                ""
-                              )}
-                              {row.status === "Invalid" ? (
-                                <Chip color="error" label={row.status} />
-                              ) : (
-                                ""
-                              )}
-                            </TableCell>
-                            <TableCell align="right">
-                              <Button color="primary" variant="contained">
-                                Edit
-                              </Button>
-                            </TableCell>
+                              <TableCell
+                                component="th"
+                                id={labelId}
+                                scope="row"
+                                padding="none"
+                              >
+                                {row.name}
+                              </TableCell>
+                              <TableCell align="right">{row.role}</TableCell>
+                              <TableCell
+                                align="right"
+                                sx={{
+                                  display: "flex",
+                                }}
+                              >
+                                <Button color="danger" variant="solid">
+                                  <Delete />
+                                </Button>
+                                <Button color="primary" variant="solid">
+                                  <EditOutlined />
+                                </Button>
+                              </TableCell>
+                            </TableRow>
+                          );
+                        })}
+                        {emptyRows > 0 && (
+                          <TableRow
+                            style={{ height: (dense ? 33 : 53) * emptyRows }}
+                          >
+                            <TableCell colSpan={6} />
                           </TableRow>
-                        );
-                      })}
-                      {emptyRows > 0 && (
-                        <TableRow
-                          style={{
-                            height: (dense ? 33 : 53) * emptyRows,
-                          }}
-                        >
-                          <TableCell colSpan={6} />
-                        </TableRow>
-                      )}
-                    </TableBody>
-                  </Table>
-                </TableContainer>
-                <TablePagination
-                  rowsPerPageOptions={[5, 10, 25]}
-                  component="div"
-                  count={rows.length}
-                  rowsPerPage={rowsPerPage}
-                  page={page}
-                  onPageChange={handleChangePage}
-                  onRowsPerPageChange={handleChangeRowsPerPage}
+                        )}
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                  <TablePagination
+                    rowsPerPageOptions={[5, 10, 25]}
+                    component="div"
+                    count={rows.length}
+                    rowsPerPage={rowsPerPage}
+                    page={page}
+                    onPageChange={handleChangePage}
+                    onRowsPerPageChange={handleChangeRowsPerPage}
+                  />
+                </Paper>
+                <FormControlLabel
+                  control={
+                    <Switch checked={dense} onChange={handleChangeDense} />
+                  }
+                  label="Dense padding"
                 />
-              </Paper>
-              <FormControlLabel
-                control={
-                  <Switch checked={dense} onChange={handleChangeDense} />
-                }
-                label="Dense padding"
-              /> */}
+              </Grid>
             </Grid>
           </Box>
         </Grid>

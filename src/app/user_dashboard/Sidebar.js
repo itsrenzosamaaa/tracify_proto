@@ -20,12 +20,12 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import SearchIcon from "@mui/icons-material/Search";
 import HighlightOffIcon from "@mui/icons-material/HighlightOff";
 import MonitorIcon from "@mui/icons-material/Monitor";
-import GroupOutlinedIcon from "@mui/icons-material/GroupOutlined";
 import Tab from "@mui/material/Tab";
 import TabList from "@mui/lab/TabList";
 import TabContext from "@mui/lab/TabContext";
 import Link from "next/link";
 import useMediaQuery from "@mui/material/useMediaQuery";
+import AccountBoxOutlinedIcon from '@mui/icons-material/AccountBoxOutlined';
 
 const drawerWidth = 220;
 
@@ -100,7 +100,7 @@ const Overlay = styled("div")(({ theme, open }) => ({
   }),
 }));
 
-export default function Admin() {
+export default function Sidebar() {
   const theme = useTheme();
   const open = UseApp((state) => state.Nopen);
   const isMobileView = useMediaQuery(theme.breakpoints.down("sm"));
@@ -123,7 +123,7 @@ export default function Admin() {
       >
         <Tab
           component={Link} // Set the component prop to Link
-          href="/office_dashboard"
+          href="/user_dashboard"
           label={
             <ListItem
               sx={{
@@ -156,7 +156,7 @@ export default function Admin() {
         />
         <Tab
           component={Link} // Set the component prop to Link
-          href="/office_dashboard/foundItems"
+          href="/user_dashboard/profile"
           label={
             <ListItem
               sx={{
@@ -172,12 +172,12 @@ export default function Admin() {
                   justifyContent: "center",
                 }}
               >
-                <SearchIcon
+                <AccountBoxOutlinedIcon
                   sx={{ fontSize: 30, marginLeft: -2.6, color: "#1a237e" }}
                 />
               </ListItemIcon>
               <ListItemText
-                primary="Found Items"
+                primary="Profile"
                 sx={{
                   color: "#1a237e",
                   alignItems: "center",
@@ -189,7 +189,7 @@ export default function Admin() {
         />
         <Tab
           component={Link} // Set the component prop to Link
-          href="/office_dashboard/lostItems"
+          href="/user_dashboard/match"
           label={
             <ListItem
               sx={{
@@ -210,7 +210,7 @@ export default function Admin() {
                 />
               </ListItemIcon>
               <ListItemText
-                primary="Lost Items"
+                primary="Match Item"
                 sx={{
                   color: "#1a237e",
                   alignItems: "center",
@@ -222,7 +222,7 @@ export default function Admin() {
         />
         <Tab
           component={Link} // Set the component prop to Link
-          href="/office_dashboard/monitor"
+          href="/user_dashboard/ratings"
           sx={{ backgroundColor: "" }}
           label={
             <ListItem
@@ -244,40 +244,7 @@ export default function Admin() {
                 />
               </ListItemIcon>
               <ListItemText
-                primary="Monitor"
-                sx={{
-                  color: "#1a237e",
-                  alignItems: "center",
-                  opacity: open ? 1 : 0,
-                }}
-              />
-            </ListItem>
-          }
-        />
-        <Tab
-          component={Link} // Set the component prop to Link
-          href="/office_dashboard/users"
-          label={
-            <ListItem
-              sx={{
-                minHeight: 48,
-                justifyContent: open ? "initial" : "center",
-                px: 2.5,
-              }}
-            >
-              <ListItemIcon
-                sx={{
-                  minWidth: 0,
-                  mr: open ? 3 : "auto",
-                  justifyContent: "center",
-                }}
-              >
-                <GroupOutlinedIcon
-                  sx={{ fontSize: 30, marginLeft: -2.6, color: "#1a237e" }}
-                />
-              </ListItemIcon>
-              <ListItemText
-                primary="Users"
+                primary="Ratings"
                 sx={{
                   color: "#1a237e",
                   alignItems: "center",

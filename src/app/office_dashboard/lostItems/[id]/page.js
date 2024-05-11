@@ -7,7 +7,9 @@ import Navbar from "../../Navbar";
 import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Link from "next/link";
-import Image from "next/image";1
+import Image from "next/image";
+import Button from "@mui/joy/Button";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 
 const modal = {
   position: "absolute",
@@ -121,6 +123,9 @@ export default function LostItemsID({ params }) {
       <Box sx={{ flexGrow: "1", display: "flex", marginRight: "1%" }}>
         <Sidebar />
         <Grid container spacing={2} sx={{ marginTop: "6rem", marginX: "1rem" }}>
+          <Box sx={{ width: "100%" }}>
+            <Button component={Link} href="/office_dashboard/lostItems" startDecorator={<KeyboardArrowLeft />}>Back</Button>
+          </Box>
           {lostID ? (
             <>
               <Grid item xs={12} md={6} lg={4}>

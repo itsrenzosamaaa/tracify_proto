@@ -4,8 +4,10 @@ import { styled, alpha } from '@mui/material/styles';
 import MuiAppBar  from '@mui/material/AppBar';
 import {Box, Toolbar, IconButton, Typography, InputBase, MenuItem, Menu} from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
+import SearchIcon from '@mui/icons-material/Search';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { UseApp } from './StatNav';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -126,7 +128,7 @@ export default function Navbar() {
                 component="div"
                 sx={{ display: { xs: 'none', sm: 'block' } }}
             >
-            Office
+                User
             </Typography>
             
             <Box sx={{ flexGrow: 1 }} />

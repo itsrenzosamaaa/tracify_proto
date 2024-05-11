@@ -2,8 +2,11 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { Card, Box, Grid, Typography, Button, TextField } from "@mui/material";
+import { Card, Grid, Typography } from "@mui/material";
+import { Input, Button } from "@mui/joy";
 import LoginIcon from "@mui/icons-material/Login";
+import InfoOutlined from '@mui/icons-material/InfoOutlined';
+import FormHelperText from '@mui/joy/FormHelperText';
 
 export default function Home() {
   const [isLoading, setIsLoading] = useState(false);
@@ -22,15 +25,15 @@ export default function Home() {
   };
 
   const handleSubmit = (e) => {
+    setIsError(false);
     e.preventDefault();
     setIsLoading(true);
+    console.log('nya')
 
     setTimeout(() => {
       if (form.username === "office" && form.password === "office") {
-        setIsError(false);
         router.push("/office_dashboard");
-      } else if (form.username === "student" && form.password === "student") {
-        setIsError(false);
+      } else if (form.username === "user" && form.password === "user") {
         router.push("/user_dashboard");
       } else {
         setIsError(true);
@@ -43,7 +46,7 @@ export default function Home() {
   return (
     <>
       <Grid container justifyContent="center">
-        <Grid item xs={12} sm={8} md={6} lg={4}>
+        <Grid item xs={9} sm={9} md={6} lg={4}>
           <Card
             elevation={3}
             sx={{
@@ -78,24 +81,24 @@ export default function Home() {
                 <form onSubmit={handleSubmit}>
                   <Grid container spacing={2}>
                     <Grid item xs={12}>
-                      <TextField
+                      <Input
                         type="text"
                         name="username"
-                        label="Username"
+                        placeholder="Username"
                         variant="outlined"
-                        fullWidth
+                        size="md"
                         value={form.username}
                         onChange={handleChange}
                         disabled={isLoading}
                       />
                     </Grid>
                     <Grid item xs={12}>
-                      <TextField
+                      <Input
                         type="password"
                         name="password"
-                        label="Password"
+                        placeholder="Password"
                         variant="outlined"
-                        fullWidth
+                        size="md"
                         value={form.password}
                         onChange={handleChange}
                         disabled={isLoading}
@@ -105,21 +108,18 @@ export default function Home() {
                       <Button
                         fullWidth
                         type="submit"
-                        variant="contained"
-                        disabled={isLoading}
+                        variant="solid"
+                        loading={isLoading}
                       >
-                        {isLoading ? "Loading..." : "Login"}
+                        Login
                       </Button>
                     </Grid>
-                    <Grid item xs={12}>
+                    <Grid item xs={12} sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                       {isError && (
-                        <Typography
-                          variant="p"
-                          component="div"
-                          sx={{ color: "red", textAlign: "center" }}
-                        >
-                          Invalid Credentials!!
-                        </Typography>
+                        <FormHelperText sx={{ color: 'red' }}>
+                          <InfoOutlined />
+                          Oops! something is wrong.
+                        </FormHelperText>
                       )}
                     </Grid>
                   </Grid>

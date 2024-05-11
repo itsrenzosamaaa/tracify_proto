@@ -8,6 +8,8 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import Link from "next/link";
 import Image from "next/image";
+import Button from "@mui/joy/Button";
+import KeyboardArrowLeft from "@mui/icons-material/KeyboardArrowLeft";
 
 const modal = {
   position: "absolute",
@@ -120,7 +122,10 @@ export default function FoundItemsID({ params }) {
       <Navbar />
       <Box sx={{ flexGrow: "1", display: "flex", marginRight: "1%" }}>
         <Sidebar />
-        <Grid container spacing={2} sx={{ marginTop: "6rem", marginX: "1rem", }}>
+        <Grid container spacing={2} sx={{ marginTop: "6rem", marginX: "1rem" }}>
+          <Box sx={{ width: "100%" }}>
+            <Button component={Link} href="/office_dashboard/foundItems" startDecorator={<KeyboardArrowLeft />}>Back</Button>
+          </Box>
           {foundID ? (
             <>
               <Grid item xs={12} md={6} lg={4}>
@@ -133,7 +138,12 @@ export default function FoundItemsID({ params }) {
                       alignItems: "center",
                     }}
                   >
-                    <Image src="/found.jpg" height="140" width="250" alt="Found1" />
+                    <Image
+                      src="/found.jpg"
+                      height="140"
+                      width="250"
+                      alt="Found1"
+                    />
                   </Box>
                   <Box sx={{ mx: "2rem", my: "2rem" }}>
                     <Typography
@@ -185,7 +195,10 @@ export default function FoundItemsID({ params }) {
                     <Typography
                       variant="body1"
                       component="div"
-                      sx={{ display: "flex", justifyContent: "space-between" }}
+                      sx={{
+                        display: "flex",
+                        justifyContent: "space-between",
+                      }}
                     >
                       <span>
                         <strong>Time Found:</strong>
@@ -195,7 +208,7 @@ export default function FoundItemsID({ params }) {
                   </Box>
                 </Card>
               </Grid>
-              <Grid item xs={12} md={6} lg={8} sx={{ marginBottom: '1rem', }}>
+              <Grid item xs={12} md={6} lg={8} sx={{ marginBottom: "1rem" }}>
                 <Card elevation={3} sx={{ my: "1rem" }}>
                   <Box sx={{ mx: "2rem", my: "2rem" }}>
                     <Typography
@@ -250,7 +263,7 @@ export default function FoundItemsID({ params }) {
                       sx={{
                         display: "flex",
                         justifyContent: "space-between",
-                        mb: '1rem',
+                        mb: "1rem",
                       }}
                     >
                       <span>
@@ -266,7 +279,7 @@ export default function FoundItemsID({ params }) {
                         alignItems: "center",
                         justifyContent: "center",
                         wordBreak: "break-word",
-                        py: '3rem',
+                        py: "3rem",
                       }}
                     >
                       <span>&ldquo;{foundID.description}&rdquo;</span>

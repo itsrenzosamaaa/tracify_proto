@@ -17,17 +17,22 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
+import Input from "@mui/joy/Input";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
+import Modal from "@mui/joy/Modal";
+import Button from "@mui/joy/Button";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
+import ModalDialog from "@mui/joy/ModalDialog";
+import DialogTitle from "@mui/joy/DialogTitle";
+import DialogContent from "@mui/joy/DialogContent";
+import Stack from "@mui/joy/Stack";
+import ModalClose from "@mui/joy/ModalClose";
 
 const foundItems = [
   {
@@ -381,7 +386,7 @@ const Requests = () => {
         <Sidebar />
         <Grid container spacing={2} sx={{ marginTop: "6rem" }}>
           <Box sx={{ width: "100%", marginBottom: "3rem" }}>
-            <Grid item xs={12} sm={10} md={9} lg={8} sx={{ margin: "0 auto" }}>
+            <Grid item xs={10} sm={10} md={9} lg={8} sx={{ margin: "0 auto" }}>
               <Paper sx={{ width: "100%", mb: 2 }}>
                 <Toolbar
                   sx={{
@@ -397,21 +402,19 @@ const Requests = () => {
                   >
                     Request Lost Items
                   </Typography>
-                  <TextField
+                  <Input
                     sx={{ width: "20rem" }}
                     id="outlined-basic"
-                    label="Search"
+                    placeholder="Search"
                     variant="outlined"
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    InputProps={{
-                      startAdornment: (
-                        <SearchIcon
-                          color="action"
-                          sx={{ marginRight: "0.5rem" }}
-                        />
-                      ),
-                    }}
+                    startDecorator={
+                      <SearchIcon
+                        color="action"
+                        sx={{ marginRight: "0.5rem" }}
+                      />
+                    }
                   />
                 </Toolbar>
                 <TableContainer sx={{ paddingLeft: "1rem" }}>
@@ -453,7 +456,7 @@ const Requests = () => {
                             <TableCell align="right">{row.category}</TableCell>
                             <TableCell align="right">
                               <Button
-                                variant="contained"
+                                variant="solid"
                                 onClick={() => handleOpenModal(row.id)}
                               >
                                 View Details
@@ -464,19 +467,13 @@ const Requests = () => {
                                 aria-labelledby="modal-modal-title"
                                 aria-describedby="modal-modal-description"
                               >
-                                <Box
-                                  sx={{
-                                    position: "absolute",
-                                    top: "50%",
-                                    left: "50%",
-                                    transform: "translate(-50%, -50%)",
-                                    width: 400,
-                                    bgcolor: "background.paper",
-                                    boxShadow: 24,
-                                    p: 4,
-                                  }}
-                                >
-                                  <Box>
+                                <ModalDialog>
+                                  <ModalClose />
+                                  <DialogTitle>Lost Item Details</DialogTitle>
+                                  <DialogContent>
+                                    Information about the owner's item.
+                                  </DialogContent>
+                                  <Stack spacing={2}>
                                     <Box
                                       sx={{
                                         my: "2rem",
@@ -485,7 +482,12 @@ const Requests = () => {
                                         alignItems: "center",
                                       }}
                                     >
-                                      <Image src="/lost.jpg" height="140" width="250" alt="Found Item" />
+                                      <Image
+                                        src="/lost.jpg"
+                                        height="140"
+                                        width="250"
+                                        alt="Found Item"
+                                      />
                                     </Box>
                                     <Typography
                                       id="modal-modal-title"
@@ -564,16 +566,21 @@ const Requests = () => {
                                     >
                                       &ldquo;{row.description}&rdquo;
                                     </Typography>
-                                  </Box>
-                                </Box>
+                                  </Stack>
+                                </ModalDialog>
                               </Modal>
                             </TableCell>
-                            <TableCell align="right" sx={{ display: "flex", justifyContent: "space-evenly" }}>
-                              <Button color="success" variant="contained">
-                                <CheckCircleOutlineIcon />
-                              </Button>
-                              <Button color="error" variant="contained">
+                            <TableCell
+                              align="right"
+                              sx={{
+                                display: "flex",
+                              }}
+                            >
+                              <Button color="danger" variant="solid">
                                 <CloseIcon />
+                              </Button>
+                              <Button color="success" variant="solid">
+                                <CheckCircleOutlineIcon />
                               </Button>
                             </TableCell>
                           </TableRow>

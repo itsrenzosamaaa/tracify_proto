@@ -17,17 +17,22 @@ import TableSortLabel from "@mui/material/TableSortLabel";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import Paper from "@mui/material/Paper";
-import TextField from "@mui/material/TextField";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import { visuallyHidden } from "@mui/utils";
 import Grid from "@mui/material/Grid";
-import Modal from "@mui/material/Modal";
-import Button from "@mui/material/Button";
+import Modal from "@mui/joy/Modal";
+import Button from "@mui/joy/Button";
 import SearchIcon from "@mui/icons-material/Search";
-import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
-import CloseIcon from '@mui/icons-material/Close';
+import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
+import CloseIcon from "@mui/icons-material/Close";
 import Image from "next/image";
+import { Input, FormControl } from "@mui/joy";
+import ModalDialog from "@mui/joy/ModalDialog";
+import DialogTitle from "@mui/joy/DialogTitle";
+import DialogContent from "@mui/joy/DialogContent";
+import Stack from "@mui/joy/Stack";
+import ModalClose from "@mui/joy/ModalClose";
 
 const foundItems = [
   {
@@ -298,6 +303,9 @@ const Requests = () => {
   const [openModal, setOpenModal] = React.useState(null);
   const handleOpenModal = (rowId) => setOpenModal(rowId);
   const handleCloseModal = () => setOpenModal(null);
+  const [openModal1, setOpenModal1] = React.useState(null);
+  const handleOpenModal1 = (rowId) => setOpenModal1(rowId);
+  const handleCloseModal1 = () => setOpenModal1(null);
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const handleSearchChange = (event) => {
@@ -397,18 +405,19 @@ const Requests = () => {
                   >
                     Request Found Items
                   </Typography>
-                  <TextField
+                  <Input
                     sx={{ width: "20rem" }}
                     id="outlined-basic"
-                    label="Search"
+                    placeholder="Search"
                     variant="outlined"
                     value={searchTerm}
                     onChange={handleSearchChange}
-                    InputProps={{
-                      startAdornment: (
-                        <SearchIcon color="action" sx={{ marginRight: "0.5rem" }} />
-                      ),
-                    }}
+                    startDecorator={
+                      <SearchIcon
+                        color="action"
+                        sx={{ marginRight: "0.5rem" }}
+                      />
+                    }
                   />
                 </Toolbar>
                 <TableContainer sx={{ paddingLeft: "1rem" }}>
@@ -450,7 +459,7 @@ const Requests = () => {
                             <TableCell align="right">{row.category}</TableCell>
                             <TableCell align="right">
                               <Button
-                                variant="contained"
+                                variant="solid"
                                 onClick={() => handleOpenModal(row.id)}
                               >
                                 View Details
@@ -461,19 +470,13 @@ const Requests = () => {
                                 aria-labelledby="modal-modal-title"
                                 aria-describedby="modal-modal-description"
                               >
-                                <Box
-                                  sx={{
-                                    position: "absolute",
-                                    top: "50%",
-                                    left: "50%",
-                                    transform: "translate(-50%, -50%)",
-                                    width: 400,
-                                    bgcolor: "background.paper",
-                                    boxShadow: 24,
-                                    p: 4,
-                                  }}
-                                >
-                                  <Box>
+                                <ModalDialog>
+                                  <ModalClose />
+                                  <DialogTitle>Found Item Details</DialogTitle>
+                                  <DialogContent>
+                                    Information about the located item.
+                                  </DialogContent>
+                                  <Stack spacing={2}>
                                     <Box
                                       sx={{
                                         my: "2rem",
@@ -482,13 +485,18 @@ const Requests = () => {
                                         alignItems: "center",
                                       }}
                                     >
-                                      <Image src="/found.jpg" height="140" width="250" alt="Found Item" />
+                                      <Image
+                                        src="/found.jpg"
+                                        height="140"
+                                        width="250"
+                                        alt="Found Item"
+                                      />
                                     </Box>
                                     <Typography
                                       id="modal-modal-title"
                                       variant="h6"
                                       component="h2"
-                                      sx={{ mb: "2rem", textAlign: 'center', }}
+                                      sx={{ mb: "2rem", textAlign: "center" }}
                                     >
                                       <strong>{row.itemName}</strong>
                                     </Typography>
@@ -526,7 +534,7 @@ const Requests = () => {
                                       sx={{
                                         display: "flex",
                                         justifyContent: "space-between",
-                                        mb: '2rem',
+                                        mb: "2rem",
                                       }}
                                     >
                                       <span>
@@ -542,7 +550,7 @@ const Requests = () => {
                                         alignItems: "center",
                                         justifyContent: "center",
                                         mb: "1rem",
-                                        textAlign: 'center',
+                                        textAlign: "center",
                                       }}
                                     >
                                       <strong>Item Description:</strong>
@@ -556,21 +564,43 @@ const Requests = () => {
                                         justifyContent: "center",
                                         wordBreak: "break-word",
                                         mb: "1rem",
-                                        textAlign: 'center',
+                                        textAlign: "center",
                                       }}
                                     >
                                       &ldquo;{row.description}&rdquo;
                                     </Typography>
-                                  </Box>
-                                </Box>
+                                  </Stack>
+                                </ModalDialog>
                               </Modal>
                             </TableCell>
-                            <TableCell align="right" sx={{ display: "flex", justifyContent: "space-evenly" }}>
-                              <Button color="success" variant="contained">
-                                <CheckCircleOutlineIcon />
-                              </Button>
-                              <Button color="error" variant="contained">
+                            <TableCell
+                              align="right"
+                              sx={{
+                                display: "flex",
+                              }}
+                            >
+                              <Button onClick={() => handleOpenModal1(row.id)} color="danger" variant="solid">
                                 <CloseIcon />
+                              </Button>
+                              <Modal
+                                open={openModal1 === row.id}
+                                onClose={handleCloseModal1}
+                                aria-labelledby="modal-modal-title"
+                                aria-describedby="modal-modal-description"
+                              >
+                                <ModalDialog>
+                                  <ModalClose />
+                                  <DialogTitle>Reason</DialogTitle>
+                                  <Stack spacing={2}>
+                                    <FormControl>
+                                      <Input required placeholder="Enter here..." />
+                                    </FormControl>
+                                    <Button color="danger" variant="solid">Reject</Button>
+                                  </Stack>
+                                </ModalDialog>
+                              </Modal>
+                              <Button color="success" variant="solid">
+                                <CheckCircleOutlineIcon />
                               </Button>
                             </TableCell>
                           </TableRow>
